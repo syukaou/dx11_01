@@ -3,8 +3,8 @@
 
 #define	WINDOW_CAPTION "AT12F101_19_朱佳旺By05/30"	//ウィンドウの名前
 
-#define SCREEN_WIDTH (1920)					// スクリーン（クライアント領域）の幅
-#define SCREEN_HEIGHT (1080)					// スクリーン（クライアント領域）の高さ
+#define SCREEN_WIDTH (1280)					// スクリーン（クライアント領域）の幅
+#define SCREEN_HEIGHT (720)					// スクリーン（クライアント領域）の高さ
 
 #define POS_DRAW_X (25)    //X25ピクセルは1マス
 #define POS_DRAW_Y (25)　　//Y25ピクセルは1マス

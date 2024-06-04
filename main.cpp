@@ -5,7 +5,8 @@
 #include <Windows.h>
 #include "game.h"
 #include "configuration.h"
-
+#include <sstream>
+#pragma comment (lib, "winmm.lib")
 // ===================================================================
 // 定数定義
 // ===================================================================
@@ -18,7 +19,7 @@
 // ===================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-
+static DWORD g_CountFPS = 0;
 
 
 
@@ -77,12 +78,20 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance
 
 	//ここがゲームの初期化
 	GameInitialize(hWnd);
+	//
+	DWORD dwExecLastTime = 0;
+	DWORD dwFPSLastTime = 0;
+	DWORD dwCurrentTime = 0;
+	DWORD dwFrameCount = 0; 
 
+	timeBeginPeriod(1); // 分解能を設定 
+	dwExecLastTime = dwFPSLastTime = timeGetTime(); // システム時刻をミリ秒単位で取得 
+	dwCurrentTime = dwFrameCount = 0;
 	// Windowsゲーム用メインループ
 	MSG msg = {};// msg.message == WM_NULL
 	while (WM_QUIT != msg.message)
 	{
-
+		
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			//メッセージがある場合はメッセージ処理を優先
@@ -91,13 +100,36 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance
 		}
 		else
 		{
-			//ここがゲームの処理
-			GameUpdate();
-			//ここがゲームの描画
-			GameDraw();
+			dwCurrentTime = timeGetTime();
+			if ((dwCurrentTime - dwFPSLastTime) >= 1000)
+			{
+              #ifdef _DEBUG 
+				g_CountFPS = dwFrameCount;
+              #endif 
+				dwFPSLastTime = dwCurrentTime;
+				dwFrameCount = 0;
+
+			}
+			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60)) {
+				dwExecLastTime = dwCurrentTime;
+#ifdef _DEBUG
+				std::stringstream caption;
+				caption << WINDOW_CAPTION << " FPS:" << g_CountFPS;
+				SetWindowText(hWnd, caption.str().c_str());
+#endif
+				//ここがゲームの処理
+				GameUpdate();
+				//ここがゲームの描画
+				GameDraw();
+				dwFrameCount++;
+			}
+			else {
+				Sleep(0);
+			}
+		
 		}
 	}
-
+	
 	//ここがゲームの終了処理
 	GameFinalize();
 

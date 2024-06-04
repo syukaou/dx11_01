@@ -19,6 +19,8 @@ void VS(in float4 inPosition : POSITION0,
         out float2 outTexCoord : TEXCOORD0)
 {
     outPosition = mul(inPosition, WorldViewProjection);
+    
+    
     outTexCoord = inTexCoord;
     outDiffuse = inDiffuse;
 }

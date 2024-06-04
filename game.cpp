@@ -10,12 +10,13 @@
 #include "directx.h"
 #include "shader.h"
 #include "polygon.h"
+#include"texture.h"
 
 void GameInitialize(HWND hWnd)
 {
 	// main.cpp‚©‚ç hWnd ‚ðŽó‚¯“n‚µ
 	DirectXInitialize(hWnd);
-
+	Texturelnitialize(DirectXGetDevice());
 	ShaderInitialize(DirectXGetDevice(), DirectXGetDeviceContext());
 	PolygonInitialize(DirectXGetDevice(), DirectXGetDeviceContext());
 }
@@ -31,7 +32,7 @@ void GameDraw(void)
 	Clear();
 
 	PolygonDraw();
-
+	//SpriteAnimeDraw(300,300);
 	Present();
 
 }

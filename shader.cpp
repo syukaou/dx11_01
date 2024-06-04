@@ -105,7 +105,7 @@ void ShaderInitialize(ID3D11Device* device, ID3D11DeviceContext* device_context)
 
 	pPSBlob->Release();
 
-
+	
 	// 定数バッファ生成
 	D3D11_BUFFER_DESC hBufferDesc;
 	hBufferDesc.ByteWidth = sizeof(XMMATRIX);
@@ -134,5 +134,7 @@ void ShaderFinalize()
 
 void ShaderVertexSetMatrix(const XMFLOAT4X4* matrix) 
 {
+	
+	
 	g_DeviceContext->UpdateSubresource(g_ConstantBuffer, 0, NULL, matrix, 0, 0);
 }
